@@ -60,4 +60,4 @@ function [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,hldout,cv_it,
     hold on; scatter(ones(size(ACC)).*(1+(rand(size(ACC))-0.5)/10),100*(ACC),'r','filled');
     title(sprintf('%s%s%s','Model Performance on ',num2str(100*hldout),'% Test')); ytickformat(ax, '%g%%');
     
-return
+end

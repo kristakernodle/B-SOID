@@ -183,7 +183,7 @@ function [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,comp,smth_h
         legend(string(1:length(unique(grp))));
     end
     
-return
+end
 
 
 
