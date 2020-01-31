@@ -1,15 +1,41 @@
 
-function allRawData = bsoid_customSetup(fullPath)
+function filtData = bsoid_customSetup(csvPath,saveMatFile)
+%BSOID_CUSTOMSETUP    setup DLC output files for use with bsoid
+%
+%   INPUTS:
+%   CSVPATH    String of directory pathway with DLC .csv output files to 
+%              be used with bsoid
+%   SAVEMATFILE    Logical (true/false) for saving filtData as .mat file in
+%                  csvPath folder
+%
+%   OUTPUTS:
+%   FILTDATA    Data cell containing 3 rows (full path to specific csv 
+%               file, filtered dlc data from csv file, percent rectified 
+%               for each body part (see dlc_proprocess.m)). Each column 
+%               is a different csv file. Saves into .mat file
+%
+%   Examples:
+%   clear allRawData;
+%   allRawData = bsoid_customSetup('/path/to/csv/files/');
+%
+%   Created by: Krista Kernodle, Date: 01302020
+%   Contact kkrista@umich.edu
     
-    % Directory where all .csv files for unsupervised learning are located
-    % fullPath = '/Volumes/SharedX/Neuro-Leventhal/analysis/mouseSkilledReaching/DLCProcessing/B-SOiD/trainingData_Center/';
-    % fullPath =
-    % 'X:\Neuro-Leventhal\analysis\mouseSkilledReaching\DLCProcessing\B-SOiD\testingData_Center/';
-    % % Vince's computer
-    % 
-
+    if nargin < 2
+        saveMatFile = true;
+    end
+    
+    if ~strcmp(csvPath(end),'/')
+        csvPath = [csvPath '/'];
+    end
+    
+    if ~exist(csvPath,'dir')
+        print('Error: Directory does not exist \n')
+        print(csvPath)
+    end
+    
     % Get a list of all .csv files in the directory
-    allFiles = dir([fullPath '*.csv']);
+    allFiles = dir([csvPath '*.csv']);
 
     for ii = 1:length(allFiles)
         % Get full path of file
@@ -29,11 +55,13 @@ function allRawData = bsoid_customSetup(fullPath)
 
         rawData = [rawdata(:,1), nose, leftPaw, rightPaw, missingBP, missingBP, missingBP];
         
-        allRawData{1,ii} = filenamecsv;
-        [allRawData{2,ii},allRawData{3,ii}] = dlc_preprocess(rawData,0.2);
+        filtData{1,ii} = filenamecsv; %#ok<*AGROW>
+        [filtData{2,ii},filtData{3,ii}] = dlc_preprocess(rawData,0.2);
         
     end
-
-    save([fullPath 'allRawData.mat'],'allRawData');
+    
+    if saveMatFile
+        save([csvPath 'filtData.mat'],'filtData');
+    end
 
 end
