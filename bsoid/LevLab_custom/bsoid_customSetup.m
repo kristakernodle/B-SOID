@@ -1,5 +1,5 @@
 
-function filtData = bsoid_customSetup(csvPath,saveMatFile)
+function filtData = bsoid_customSetup(csvPath,saveMatFile,d)
 %BSOID_CUSTOMSETUP    setup DLC output files for use with bsoid
 %
 %   INPUTS:
@@ -61,7 +61,7 @@ function filtData = bsoid_customSetup(csvPath,saveMatFile)
     end
     
     if saveMatFile
-        save([csvPath 'filtData.mat'],'filtData');
+        save([csvPath 'filtData-' d '.mat'],'filtData');
     end
 
 end

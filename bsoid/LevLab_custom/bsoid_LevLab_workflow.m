@@ -1,4 +1,4 @@
-function [filtData,OF_mdl] = bsoid_LevLab_workflow(csvPath,fps,varargin)
+function [analyzedData] = bsoid_LevLab_workflow(csvPath,fps,varargin)
 %BSOID_CUSTOMSETUP    setup DLC output files for use with bsoid
 %
 %   INPUTS:
@@ -43,13 +43,21 @@ function [filtData,OF_mdl] = bsoid_LevLab_workflow(csvPath,fps,varargin)
         disp([csvPath,'\n'])
     end
     
+    d=char(datetime('now','Format','yyyy-MM-dd''-T-''HH-mm-ss'));
+    
     %% Load Data
     if filterDLCOutput
         % Filter Data
-        filtData = bsoid_customSetup(csvPath,filterDLCOutput);
+        filtData = bsoid_customSetup(csvPath,filterDLCOutput,d);
     else
         % Load existing .mat file
-        filtData = load([csvPath 'allRawData_*.mat']);
+        allFiltMats = dir([csvPath 'filtData*.mat']);
+        if isempty(allFiltMats)
+            disp('Error: Filtered data does not exist. Please check the directory and try again\n');
+        else
+            [A,I] = max([allFiltMats(:).datenum]);
+            load([allFiltMats(I).folder '/' allFiltMats(I).name]);
+        end
     end
     
     %% Load Model
@@ -61,7 +69,7 @@ function [filtData,OF_mdl] = bsoid_LevLab_workflow(csvPath,fps,varargin)
         end
         [f_10fps,tsne_feats,grp,llh,bsoid_fig] = bsoid_gmm(data,fps,1);
         fig1 = gcf;
-        savefig(fig1,[csvPath 'bsoid_groupingFig.fig']);
+        savefig(fig1,[csvPath 'bsoid_groupingFig-' d '.fig']);
 
         % Build model for future testing
         hldout=0.2;
@@ -69,20 +77,31 @@ function [filtData,OF_mdl] = bsoid_LevLab_workflow(csvPath,fps,varargin)
         btchsz = floor(length(grp)*0.2/cv_it);
         [OF_mdl,CV_amean,CV_asem,acc_fig] = bsoid_mdl(f_10fps,grp,hldout,cv_it,btchsz);
         fig2 = gcf;
-        savefig(fig2,[csvPath 'bsoid_accuracyFig.fig']);
+        savefig(fig2,[csvPath 'bsoid_accuracyFig-' d '.fig']);
 
         % Save model for future use
-        save([csvPath 'BSOID_model_' date '.mat'],'csvPath','fps','filtData','f_10fps','tsne_feats','grp','llh','OF_mdl','CV_amean','CV_asem')
+        save([csvPath 'BSOID_model-' d '.mat'],'csvPath','fps','filtData','f_10fps','tsne_feats','grp','llh','OF_mdl','CV_amean','CV_asem')
     else
         allModels = dir([csvPath,'BSOID_model_*.mat']);
         if isempty(allModels)
             disp('Error: Model does not exist. Please check the directory and try again\n');
-            disp('You can create a new model by setting "createModel=true"\n');
         else
-            [A,I]=max([allModels(:).datenum]);
+            [~,I] = max([allModels(:).datenum]);
+            load([allModels(I).folder '/' allModels(I).name],'OF_mdl');
         end
     end
     
     %% Analyze Data
+    analyzedData = cell(5,length(filtData));
+    for ii = 1:length(filtData)
+        [labels,f_10fps_test] = bsoid_svm({filtData{2,ii}},fps,OF_mdl);
+        analyzedData{1,ii} = filtData{1,ii};
+        analyzedData{2,ii} = filtData{2,ii};
+        analyzedData{3,ii} = filtData{3,ii};
+        analyzedData{4,ii} = labels;
+        analyzedData{5,ii} = f_10fps_test;
+    end
+    
+    save([csvPath 'analyzedData-' d '.mat'],'analyzedData');
     
 end
