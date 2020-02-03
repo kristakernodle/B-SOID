@@ -1,19 +1,24 @@
-function [analyzedData] = bsoid_LevLab_workflow(csvPath,fps,varargin)
-%BSOID_CUSTOMSETUP    setup DLC output files for use with bsoid
+function [analyzedData] = bsoid_dataAnalysis_LevLabWkFlw(csvPath,fps,varargin)
+%BSOID_DATAANALYSIS_LEVLABWKFLW  Create new/load old bsoid model and analyze all data in a directory
 %
 %   INPUTS:
 %   CSVPATH    String of directory pathway with DLC .csv output files to 
 %              be used with bsoid
 %              csvPath = '/Volumes/SharedX/Neuro-Leventhal/analysis/mouseSkilledReaching/DLCProcessing/B-SOiD/testingData_Center/';
 %              csvPath = 'X:\Neuro-Leventhal\analysis\mouseSkilledReaching\DLCProcessing\B-SOiD\testingData_Center/';
-%   filterDLCOutput    Logical (true/false) for saving filtData as .mat file in
-%                  csvPath folder
+%   FPS   Frames per second (recording speed)
 %
+%   OPTIONAL INPUTS:
+%   FILTERDLCOUTPUT    Logical. If true, filters all data in csvPath and saves it as a .mat file in csvPath folder. If false, loads most recently created filtData-date.mat
+%   CREATEMODEL    Logical. If true, creates new model and saves in csvPath as .mat file. If false, loads most recent model in csvPath.
+%   
 %   OUTPUTS:
-%   ?
+%   ANALYZEDDATA
 %
 %   Examples:
-%   ?
+%   csvPath = '/Volumes/SharedX/Neuro-Leventhal/analysis/mouseSkilledReaching/DLCProcessing/B-SOiD/testingData_Center/';
+%   fps = 100;
+%   [analyzedData] = bsoid_LevLab_workflow(csvPath,fps,true,true);
 %
 %   Created by: Krista Kernodle, Date: 01302020
 %   Contact kkrista@umich.edu
