@@ -27,8 +27,8 @@ function bsoid_prepForPython_LevLabWkFlow(csvPath,bsoid_outDir)
     
     % Check directories
     if ~exist(csvPath,'dir')
-        disp('Error: csvPath directory does not exist \n')
-        disp([csvPath,'\n'])
+        disp('Error: csvPath directory does not exist')
+        disp(csvPath)
     end
     if ~exist(bsoid_outDir,'dir')
         disp('Error: bsoid_outDir directory does not exist \n')
@@ -59,7 +59,7 @@ function bsoid_prepForPython_LevLabWkFlow(csvPath,bsoid_outDir)
         filename = split_filename{2};
         vid = strsplit(filename,'D');
         vid = vid{1};
-        csvwrite([bsoid_outDir vid '_10fpsLabels.csv'],analyzedData{5,ii}{1});
+        csvwrite([bsoid_outDir vid '_10fpsLabels.csv'],analyzedData{4,ii}{1});
     end
     
 end
