@@ -1,4 +1,4 @@
-function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
+function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,fps,filepathOutResults)
 %ACTION_GIF2     Create a short, randomly sampled video from BSOID grouping. BSOID learns from data, and this is a way for you to subjectively 
 %               name the individual groups that were apparently statistically different. 
 %   
@@ -26,7 +26,7 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
         n_len = 6;
     end
     if nargin < 5
-        X = 0.5;
+        fps = 50;
     end
     if nargin < 6
         filepathOutResults = pwd;
@@ -40,23 +40,24 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
     for b = 1:length(unique(grp))
         act_i_frms{b} = t(find(t(:,1)==b),:);
         B{b} = cat(2,ts(find(t(:,1)==b & t(:,2)>=n_len),:),ts(find(t(:,1)==b & t(:,2)>=n_len),2)-ts(find(t(:,1)==b & t(:,2)>=n_len)-1,2));   
-        if numel(B{b}(:,1)) >= n
-            x{b} = randsample(B{b}(:,2),n);
-        else
-            x{b} = B{b}(:,2);
-        end
+        
+        x{b} = B{b}(:,2);
+        
         for r = 1:length(x{b})
             b_ex{b}(r,:) = [B{b}(find(B{b}(:,2) == x{b}(r)),2)-B{b}(find(B{b}(:,2) == x{b}(r)),3),B{b}(find(B{b}(:,2) == x{b}(r)),2)];
             images = {};
             for i = b_ex{b}(r,1):b_ex{b}(r,2)
-                images{end+1} = imread(sprintf('%s%s',PNGpath,'img',num2str(i+1),'.png'));
+                images{end+1} = imread(sprintf('%s%s',PNGpath,'img',num2str((i+1)),'.png'));
             end
-
+            
+            PNGFoldName = strsplit(PNGpath,'/');
+            PNGFoldName = PNGFoldName(end-1);
+            PNGFoldName = PNGFoldName{1};
             % create the video writer with 3 fps
-            writerObj = VideoWriter(sprintf('%s%s%s',filepathOutResults,'/','group',num2str(b),'_example_',num2str(r),'.avi'));
-            writerObj.FrameRate = X*10;
+            writerObj = VideoWriter(sprintf('%s%s%s',filepathOutResults,'/','group',num2str(b),'_',PNGFoldName,'_',num2str(r),'.avi'));
+            writerObj.FrameRate = fps;
             % set the frames per image
-            secsPerImage = [ones(i,1)];
+            secsPerImage = [ones(i,1)]*(60/fps);
             % open the video writer
             open(writerObj);
             % write the frames to the video

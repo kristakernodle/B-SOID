@@ -62,26 +62,27 @@ for csv in csvFiles:
     fullVidPath = find_vidFullPath(vidDir,filename)
     if type(fullVidPath) == list:
         continue
-    
     vidOutDir = str('/'.join(fullVidPath.split('/')[:-2]) + '/bsoidVids/')
-    pngOutDir = vidOutDir + str(filename) + "_10fpsPNG/"
+    pngOutDir = vidOutDir + str(filename) + "_PNG"
     
     command0a = "rm -r " + vidOutDir
     command0b = "rm -r " + pngOutDir
     command1a = "mkdir " + vidOutDir
     command1b = "mkdir " + pngOutDir
-    command2 = "ffmpeg -hide_banner -loglevel panic -i " + str(fullVidPath) + " -filter:v fps=fps=10 " + vidOutDir + str(filename) + "_10fpsvideo.mp4"
-    command3 = "ffmpeg -hide_banner -loglevel panic -i " + vidOutDir + str(filename)+ "_10fpsPNG/img%01d.png"
+    command2 = "ffmpeg -y -hide_banner -loglevel panic -i " + str(fullVidPath) + str(filename) + "_10fpsvideo.mp4"
+    command3 = "ffmpeg -y -i \"" + str(fullVidPath) +"\" " + pngOutDir+ "/img%01d.png"
     
-    print(fullVidPath)
-    os.system(command0a)
+#    os.system(command0a)
     
-    os.system(command0b)
-    print('making directory')
-    os.system(command1a)
-    os.system(command1b)
-    print('making new vid')
-    os.system(command2)
+    print(fullVidPath)    
+    if not path.exists(vidOutDir):
+        print('making directory')
+        os.system(command1a)
+    if not path.exists(pngOutDir):
+        print('making directory')
+        os.system(command1b)
+#    print('making new vid')
+#    os.system(command2)
     print('making png')
     os.system(command3)
 #    
