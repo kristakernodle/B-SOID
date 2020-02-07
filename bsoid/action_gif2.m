@@ -4,7 +4,7 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
 %   
 %   [T,B,B_EX] = ACTION_GIF2(PNGPATH,GRP,N,N_LEN,FILEPATHOUTRESULTS) outputs classified behaviors based on DeepLabCut analysis
 %   PNGPATH    The path to frame-by-frame video from FFmpeg.
-%   GRP    Statistically different gropus based on unsupervised GMM model fitting of action space data. This is the output from BSOID.
+%   GRP    Statistically different groups based on unsupervised GMM model fitting of action space data. This is the output from BSOID.
 %   N    Number of sampled video you desire. Default 3. 
 %   N_LEN    Lower bound for consecutive frames (10fps, 50ms each) for which the video will be generated from. Default 6 (300ms).
 %   X    X times speed. Default 0.5.
@@ -33,7 +33,7 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,X,filepathOutResults)
     end
     fprintf('Computer generating videos... \nCan human tell me what the animal is doing? \n');
     clear i0 ii t ts act_i_frms ieb x ieb_rnd
-    i0 = [true;diff(grp')~=0];
+    i0 = [true;diff(grp)~=0];
     ii = cumsum(i0);
     t = [0,0;grp(i0)',accumarray(ii,1)];
     ts = cat(2,t(:,1),cumsum(t(:,2)));
