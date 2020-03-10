@@ -180,8 +180,8 @@ We are a neuroscience lab and welcome all contributions to improve this algorith
 
 ## License
 
-This software package provided without warranty of any kind and is licensed under the GNU Lesser General Public License v3.0. 
-If you use our algorithm and/or model/data, please cite us! Preprint/peer-review will be announced in the following section. (https://choosealicense.com/licenses/agpl-3.0/)
+This software package provided without warranty of any kind and is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/). 
+If you use our algorithm and/or model/data, please cite us! Preprint/peer-review will be announced in the following section. 
 
 ## News
 September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/content/10.1101/770271v1) 
@@ -196,3 +196,5 @@ September 2019: First B-SOiD preprint in [bioRxiv](https://www.biorxiv.org/conte
 4. [L.J.P. van der Maaten. Accelerating t-SNE using Tree-Based Algorithms. Journal of Machine Learning Research 15(Oct):3221-3245, 2014.](https://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf)
 
 5. [Chen M. EM Algorithm for Gaussian Mixture Model (EM GMM). MATLAB Central File Exchange. Retrieved July 15, 2019.](https://www.mathworks.com/matlabcentral/fileexchange/26184-em-algorithm-for-gaussian-mixture-model-em-gmm)
+
+6. [Scikit-learn: Machine Learning in Python, Pedregosa et al., JMLR 12, pp. 2825-2830, 2011.](http://www.jmlr.org/papers/volume12/pedregosa11a/pedregosa11a.pdf)
