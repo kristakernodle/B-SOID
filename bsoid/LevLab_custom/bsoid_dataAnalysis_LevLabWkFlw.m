@@ -1,4 +1,4 @@
-function [analyzedData] = bsoid_dataAnalysis_LevLabWkFlw(csvPath,fps,varargin)
+function [analyzedData] = bsoid_dataAnalysis_LevLabWkFlw(csvPath,fps,camView,varargin)
 %BSOID_DATAANALYSIS_LEVLABWKFLW  Create new/load old bsoid model and analyze all data in a directory
 %
 %   INPUTS:
@@ -30,12 +30,14 @@ function [analyzedData] = bsoid_dataAnalysis_LevLabWkFlw(csvPath,fps,varargin)
     addRequired(p,'fps',validScalarPosNum);
     addOptional(p,'filterDLCOutput',true);
     addOptional(p,'createModel',true);
-    parse(p,csvPath,fps,varargin{:});
+    addRequired(p,'view',@ischar);
+    parse(p,csvPath,fps,camView,varargin{:});
     
     csvPath = p.Results.csvPath;
     fps = p.Results.fps;
     filterDLCOutput = p.Results.filterDLCOutput;
     createModel = p.Results.createModel;
+    camView = p.Results.view;
     
     % Update csvPath formatting
     if ~strcmp(csvPath(end),'/')
@@ -53,7 +55,7 @@ function [analyzedData] = bsoid_dataAnalysis_LevLabWkFlw(csvPath,fps,varargin)
     %% Load Data
     if filterDLCOutput
         % Filter Data
-        filtData = bsoid_customSetup(csvPath,filterDLCOutput,d);
+        filtData = bsoid_customSetup(csvPath,filterDLCOutput,d,camView);
     else
         % Load existing .mat file
         allFiltMats = dir([csvPath 'filtData*.mat']);

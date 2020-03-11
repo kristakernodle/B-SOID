@@ -5,7 +5,7 @@ clear grp
 
 n=15;
 n_len=1;
-X=0.83;
+X=50;
 filepathOutResults='/Volumes/SharedX/Neuro-Leventhal/analysis/mouseSkilledReaching/DLCProcessing/B-SOiD/bsoid_vids_byGroup';
 og_dir = '/Volumes/SharedX/Neuro-Leventhal/data/mouseSkilledReaching';
 allAnimalDir = dir(og_dir);

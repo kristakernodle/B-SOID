@@ -34,6 +34,10 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,fps,filepathOutResults)
     fprintf('Computer generating videos... \nCan human tell me what the animal is doing? \n');
     clear i0 ii t ts act_i_frms ieb x ieb_rnd
     i0 = [true;diff(grp')~=0];
+%     for index = 1:length(i0)
+%         i1((index-1)*10+1:(index-1)*10+10) = i0(index);
+%         long_grp((index-1)*10+1:(index-1)*10+10) = grp(index);
+%     end
     ii = cumsum(i0);
     t = [0,0;grp(i0)',accumarray(ii,1)];
     ts = cat(2,t(:,1),cumsum(t(:,2)));
@@ -46,7 +50,11 @@ function [t,B,b_ex] = action_gif2(PNGpath,grp,n,n_len,fps,filepathOutResults)
         for r = 1:length(x{b})
             b_ex{b}(r,:) = [B{b}(find(B{b}(:,2) == x{b}(r)),2)-B{b}(find(B{b}(:,2) == x{b}(r)),3),B{b}(find(B{b}(:,2) == x{b}(r)),2)];
             images = {};
-            for i = b_ex{b}(r,1):b_ex{b}(r,2)
+            for i = b_ex{b}(r,1)*10:b_ex{b}(r,2)*10-1
+                if b == 4
+                    %
+                    continue
+                end
                 images{end+1} = imread(sprintf('%s%s',PNGpath,'img',num2str((i+1)),'.png'));
             end
             

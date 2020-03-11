@@ -1,5 +1,5 @@
 
-function filtData = bsoid_customSetup(csvPath,saveMatFile,d)
+function filtData = bsoid_customSetup(csvPath,saveMatFile,date,view)
 %BSOID_CUSTOMSETUP    setup DLC output files for use with bsoid
 %
 %   INPUTS:
@@ -38,6 +38,12 @@ function filtData = bsoid_customSetup(csvPath,saveMatFile,d)
     allFiles = dir([csvPath '*.csv']);
 
     for ii = 1:length(allFiles)
+        
+        % Skip .csv files that are not of the view we are interested in
+        if ~contains(allFiles(ii).name,view)
+            continue
+        end
+        
         % Get full path of file
         filenamecsv = sprintf('%s/%s',allFiles(ii).folder,allFiles(ii).name);
 
@@ -61,7 +67,7 @@ function filtData = bsoid_customSetup(csvPath,saveMatFile,d)
     end
     
     if saveMatFile
-        save([csvPath 'filtData-' d '.mat'],'filtData');
+        save([csvPath 'filtData-' date '.mat'],'filtData');
     end
 
 end

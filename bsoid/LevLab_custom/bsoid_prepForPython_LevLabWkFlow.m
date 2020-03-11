@@ -1,4 +1,4 @@
-function bsoid_prepForPython_LevLabWkFlow(csvPath,bsoid_outDir)
+function bsoid_prepForPython_LevLabWkFlow(csvPath,bsoid_outDir,view)
 %BSOID_PREPFORPYTHON_LEVLABWKFLW  Save labeled 10fps data (bsoid output) into .csv files
 %
 %   INPUTS:
@@ -20,10 +20,12 @@ function bsoid_prepForPython_LevLabWkFlow(csvPath,bsoid_outDir)
     p = inputParser;
     addRequired(p,'csvPath',@ischar);
     addRequired(p,'bsoid_outDir',@ischar);
-    parse(p,csvPath,bsoid_outDir);
+    addRequired(p,'view',@ischar);
+    parse(p,csvPath,bsoid_outDir,view);
     
     csvPath = p.Results.csvPath;
     bsoid_outDir = p.Results.bsoid_outDir;
+    view = p.Results.view;
     
     % Check directories
     if ~exist(csvPath,'dir')
